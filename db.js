@@ -1,6 +1,13 @@
 var mongoose = require('mongoose');
 
-mongoose.connect('mongodb://localhost/todo');
+if(process.env.PORT)
+{
+	mongoose.connect('mongodb://todo:todo@staff.mongohq.com:10082/todo');
+}
+else
+{
+	mongoose.connect('mongodb://localhost/todo');
+}
 
 var todoSchema = new mongoose.Schema({
 	title    : {type: String, required: true},
