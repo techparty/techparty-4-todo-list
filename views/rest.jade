@@ -1,0 +1,69 @@
+doctype 5
+html(lang="en")
+	head
+		title REST Interface
+		style
+			h4 {
+				margin-bottom: 2px;
+				margin-left: 5px;
+			}
+			h4 div {
+				font-weight: normal;
+				color: #aaa;
+				margin-right: 10px;
+				margin-top: 25px;
+				float: right;
+			}
+			#description {
+				border: 1px solid #ccc;
+				background-color: #fafafa;
+				border-radius: 5px;
+				padding: 10px;
+			}
+	body
+		h4 GET #{url} 
+			div Example 
+				a(href='#{url}') #{url}
+		#description
+			| Show this help
+
+		h4 GET #{url}/todo 
+			div Example 
+				a(href='#{url}/todo') #{url}/todo
+		#description
+			| Return all ToDos as JSON
+			pre
+				|[
+				|	{
+				|		"title": "Todo 0",
+				|		"createdAt": "2012-03-28T18:28:03.516Z",
+				|		"todoDate": "2012-03-28T18:28:03.516Z",
+				|		"priority": "Low",
+				|		"status": "Completed",
+				|		"user": "Rodrigo",
+				|		"_id": "4f7358335e100d0100000001"
+				|	}...
+
+		h4 GET #{url}/todo/{_id} 
+			div Example 
+				a(href='#{url}/todo/4f7358335e100d0100000001') #{url}/todo/4f7358335e100d0100000001
+		#description
+			| Return the ToDo with <b>_id</b> passed
+
+		h4 GET #{url}/todo/{property}/{value} 
+			div Example 
+				a(href='#{url}/todo/title/Todo 5') #{url}/todo/title/Todo 5
+		#description
+			| Return all ToDos that contain the passed <b>value</b> into the passed <b>property</b>
+
+		h4 POST #{url}/todo
+		#description
+			| TODO
+
+		h4 PUT #{url}/todo
+		#description
+			| TODO
+
+		h4 DELETE #{url}/todo
+		#description
+			| TODO

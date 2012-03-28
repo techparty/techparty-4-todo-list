@@ -77,6 +77,14 @@ app.delete('/todo/:id', function(req, res)
 	});
 });
 
+app.get('/', function(req, res)
+{
+	app.set('view options', {layout: false});
+	res.render('rest.jade', {
+		url: 'http://'+req.headers.host
+	});
+});
+
 var port = process.env.PORT || 3000;
 app.listen(port, function() {
 	console.log("Listening on " + port);
