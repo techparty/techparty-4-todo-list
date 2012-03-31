@@ -97,7 +97,7 @@ app.get('/mail/:email', function(req, res)
 	});
 	myMsg.send(function(err)
 	{
-		console.log(arguments);
+		res.send(arguments);
 	});
 });
 
