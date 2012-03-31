@@ -85,6 +85,22 @@ app.get('/', function(req, res)
 	});
 });
 
+app.get('/mail/:email', function(req, res)
+{
+	var Email = require('email').Email
+	var myMsg = new Email(
+	{
+		from: "me@example.com",
+		to:   req.params.email,
+		subject: "Knock knock...",
+		body: "Who's there?"
+	});
+	myMsg.send(function(err)
+	{
+		console.log(arguments);
+	});
+});
+
 var port = process.env.PORT || 3000;
 app.listen(port, function() {
 	console.log("Listening on " + port);
