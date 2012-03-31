@@ -4,21 +4,27 @@ html(lang="en")
 		title REST Interface
 		style
 			h4 {
-				margin-bottom: 2px;
 				margin-left: 5px;
 			}
 			h4 div {
 				font-weight: normal;
 				color: #aaa;
-				margin-right: 10px;
-				margin-top: 25px;
+				margin-right: 60px;
+				margin-top: 50px;
 				float: right;
 			}
 			#description {
 				border: 1px solid #ccc;
-				background-color: #fafafa;
+				background-color: #eee;
 				border-radius: 5px;
 				padding: 10px;
+				margin: 0px 50px;
+			}
+			pre {
+				border: 1px solid #ccc;
+				border-radius: 5px;
+				padding: 5px;
+				background-color: #fff;
 			}
 	body
 		h4 GET #{url} 
@@ -27,43 +33,160 @@ html(lang="en")
 		#description
 			| Show this help
 
-		h4 GET #{url}/todo 
+		h4 GET #{url}/todo/{user} 
 			div Example 
-				a(href='#{url}/todo') #{url}/todo
+				a(href='#{url}/todo/Rodrigo') #{url}/todo/Rodrigo
 		#description
-			| Return all ToDos as JSON
+			| Return all ToDos with the passed <b>user</b> as an Array of Objects (JSON)
 			pre
 				|[
 				|	{
-				|		"title": "Todo 0",
-				|		"createdAt": "2012-03-28T18:28:03.516Z",
-				|		"todoDate": "2012-03-28T18:28:03.516Z",
-				|		"priority": "Low",
-				|		"status": "Completed",
-				|		"user": "Rodrigo",
-				|		"_id": "4f7358335e100d0100000001"
+				|		"title"		: "Todo 0",
+				|		"createdAt"	: "2012-03-28T18:28:03.516Z",
+				|		"todoDate"	: "2012-03-28T18:28:03.516Z",
+				|		"priority"	: "Low",
+				|		"status"	: "Completed",
+				|		"user"		: "Rodrigo",
+				|		"_id"		: "4f7358335e100d0100000001"
 				|	}...
 
-		h4 GET #{url}/todo/{_id} 
+		h4 GET #{url}/todo/{user}/{_id} 
 			div Example 
-				a(href='#{url}/todo/4f7358335e100d0100000001') #{url}/todo/4f7358335e100d0100000001
+				a(href='#{url}/todo/Rodrigo/4f7358335e100d0100000001') #{url}/todo/Rodrigo/4f7358335e100d0100000001
 		#description
-			| Return the ToDo with <b>_id</b> passed
+			| Return the ToDo with the passed <b>_id</b> as an Array with 1 Object (JSON)
 
-		h4 GET #{url}/todo/{property}/{value} 
+		h4 GET #{url}/todo/{user}/{property}/{value} 
 			div Example 
-				a(href='#{url}/todo/title/Todo 5') #{url}/todo/title/Todo 5
+				a(href='#{url}/todo/Rodrigo/title/Todo 5') #{url}/todo/Rodrigo/title/Todo 5
 		#description
-			| Return all ToDos that contain the passed <b>value</b> into the passed <b>property</b>
+			| Return all ToDos that contain the passed <b>value</b> into the passed <b>property</b> as an Array of Objects (JSON)
 
 		h4 POST #{url}/todo
 		#description
-			| TODO
+			| Add a new ToDo <br/><br/>
+			| Is expected this format at payload:
+			pre
+				|{
+				|	"title"		: String,
+				|	"createdAt"	: Date,
+				|	"todoDate"	: Date,
+				|	"priority"	: String,
+				|	"status"	: String,
+				|	"user"		: String
+				|}
+			| Example:
+			pre
+				|{
+				|	"title"		: "Create documentation for this project",
+				|	"createdAt"	: "2012-03-31T18:15:00.127Z",
+				|	"todoDate"	: "2012-03-31T18:15:00.127Z",
+				|	"priority"	: "Low",
+				|	"status"	: "Completed",
+				|	"user"		: "Rodrigo"
+				|}
+			div OBS: Do not inform the <b>_id</b> property <br/><br/>
+			div If the record was saved, returns <b>HTTP Status 200</b> and an Object like (JSON):
+			pre
+				|{
+				|	"success": true,
+				|	"payload": {
+				|		"title"    : "Todo 12",
+				|		"createdAt": "2012-03-28T20:01:11.440Z",
+				|		"todoDate" : "2012-03-28T20:01:11.440Z",
+				|		"priority" : "Low",
+				|		"status"   : "Completed",
+				|		"user"     : "Jessica",
+				|		"_id"      : "4f775513e43680395a000005"
+				|	}
+				|}
+			div If the record was not saved, returns <b>HTTP Status 400</b> and an Object like (JSON):
+			pre
+				|{
+				|	"success": false,
+				|	"error": {
+				|		"message": "Validation failed",
+				|		"name"   : "ValidationError",
+				|		"errors" : {
+				|			"user": {
+				|				"message": "Validator "required" failed for path user",
+				|				"name"   : "ValidatorError",
+				|				"path"   : "user",
+				|				"type"   : "required"
+				|			}
+				|		}
+				|	}
+				|}
 
-		h4 PUT #{url}/todo
+		h4 PUT #{url}/todo/{_id}
 		#description
-			| TODO
+			| Update ToDo with the passed <b>_id</b> <br/><br/>
+			div Is expected this format at payload:
+			pre
+				|{
+				|	"title"		: String,
+				|	"createdAt"	: Date,
+				|	"todoDate"	: Date,
+				|	"priority"	: String,
+				|	"status"	: String,
+				|	"user"		: String
+				|}
+			div Example:
+			pre
+				|{
+				|	"title"		: "Create documentation for this project",
+				|	"createdAt"	: "2012-03-31T18:15:00.127Z",
+				|	"todoDate"	: "2012-03-31T18:15:00.127Z",
+				|	"priority"	: "Low",
+				|	"status"	: "Completed",
+				|	"user"		: "Rodrigo"
+				|}
+			div Or can be informed only properties that you want to change, Example:
+			pre
+				|{
+				|	"priority"	: "Hight",
+				|	"status"	: "Open"
+				|}
+			div OBS: Do not inform the <b>_id</b> property <br/><br/>
+			div If the record was updated, returns <b>HTTP Status 200</b> and an Object like (JSON):
+			pre
+				|{
+				|	"success"	: true,
+				|	"_id"		: "4f774523428d3be54700000b",
+				|	"payload"	: {
+				|		"priority"	: "Hight",
+				|		"status"	: "Open"
+				|	}
+				|}
+			div If the record was not updated, returns <b>HTTP Status 404</b> and an Object like (JSON):
+			pre
+				|{
+				|	"success"	: false,
+				|	"msg"		: "Record not found",
+				|	"_id"		: "4f774523428d3be54700000b"
+				|}
 
-		h4 DELETE #{url}/todo
+		h4 DELETE #{url}/todo/{_id}
 		#description
-			| TODO
+			| Delete ToDo with the passed <b>_id</b> <br/><br/>
+			div If the record was deleted, returns <b>HTTP Status 200</b> and an Object like (JSON):
+			pre
+				|{
+				|	"success"	: true,
+				|	"_id"		: "4f774523428d3be54700000b"
+				|}
+			div If the record was not deleted, returns <b>HTTP Status 404</b> and an Object like (JSON):
+			pre
+				|{
+				|	"success"	: false,
+				|	"msg"		: "Record not found",
+				|	"_id"		: "4f774523428d3be54700000b"
+				|}
+
+
+
+
+
+
+
+

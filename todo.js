@@ -13,9 +13,11 @@ app.get('/bootstrap', function(req, res)
 	});
 });
 
-app.get('/todo/:p1?/:p2?', function(req, res)
+app.get('/todo/:user/:p1?/:p2?', function(req, res)
 {
-	var params = {};
+	var params = {
+		user: req.params.user
+	};
 	if(!req.params.p2 && req.params.p1)
 	{
 		params._id = req.params.p1;
@@ -36,11 +38,17 @@ app.post('/todo', function(req, res)
 	record.save(function(error, doc){
 		if(error)
 		{
-			res.send(error, 400);
+			res.send({
+				success: false,
+				error: error
+			}, 400);
 		}
 		else
 		{
-			res.send(doc);
+			res.send({
+				success: true,
+				payload: doc
+			}, 200);
 		}
 	});
 });
@@ -52,11 +60,19 @@ app.put('/todo/:id', function(req, res)
 	},req.body, function(error, count){
 		if(count > 0)
 		{
-			res.send(req.body);
+			res.send({
+				success	: false,
+				_id		: req.params.id,
+				payload	: req.body
+			}, 200);
 		}
 		else
 		{
-			res.send("Record not found ("+req.params.id+")", 400);
+			res.send({
+				success	: false,
+				msg		: 'Record not found',
+				_id		: req.params.id
+			}, 404);
 		}
 	});
 });
@@ -68,11 +84,18 @@ app.delete('/todo/:id', function(req, res)
 	}, function(error, count){
 		if(count === 1)
 		{
-			res.send({success: true}, 200);
+			res.send({
+				success	: true,
+				_id		: req.params.id
+			}, 200);
 		}
 		else
 		{
-			res.send("Record not found ("+req.params.id+")", 400);
+			res.send({
+				success	: false,
+				msg		: 'Record not found',
+				_id		: req.params.id
+			}, 404);
 		}
 	});
 });
@@ -82,22 +105,6 @@ app.get('/', function(req, res)
 	app.set('view options', {layout: false});
 	res.render('rest.jade', {
 		url: 'http://'+req.headers.host
-	});
-});
-
-app.get('/mail/:email', function(req, res)
-{
-	var Email = require('email').Email
-	var myMsg = new Email(
-	{
-		from: "me@example.com",
-		to:   req.params.email,
-		subject: "Knock knock...",
-		body: "Who's there?"
-	});
-	myMsg.send(function(err)
-	{
-		res.send(arguments);
 	});
 });
 
