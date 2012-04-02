@@ -1,4 +1,4 @@
-Window = ->
+Window = (user) ->
 	
 	# Requires
 	xhr = require 'lib/xhr'
@@ -12,7 +12,7 @@ Window = ->
 	self.add tableView
 
 	# Request to get Todo's list
-	xhr.request "GET", "http://techparty-todo-test.herokuapp.com/todo/Rafael", (response) ->
+	xhr.request "GET", "http://techparty-todo-test.herokuapp.com/todo/{#user}", (response) ->
 		
 		response = JSON.parse response
 
