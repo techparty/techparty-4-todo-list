@@ -5,7 +5,7 @@ ApplicationWindow = ->
 	win = require 'ui/ListTodo'
 
 	nav = Ti.UI.iPhone.createNavigationGroup
-		window: win()
+		window: win('Rafael')
 
 	self.add nav
 	self
