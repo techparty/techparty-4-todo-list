@@ -5,26 +5,30 @@ var express = require('express'),
 app.use(express.bodyParser());
 app.enable("jsonp callback");
 
-app.get('/bootstrap', function(req, res)
+app.post('/test', function(req, res)
 {
-	require('./bootstrap').callback(function(error,docs)
-	{
-		res.send(error||docs);
+	res.send({
+		body: req.body
 	});
 });
 
-app.get('/todo/:user/:p1?/:p2?', function(req, res)
+app.get('/todo/id/:id', function(req, res)
+{
+	db.todo.findOne(req.params.id, function(err, docs)
+	{
+		res.send(docs);
+	});
+});
+
+
+app.get('/todo/:user/:property?/:value?', function(req, res)
 {
 	var params = {
 		user: req.params.user
 	};
-	if(!req.params.p2 && req.params.p1)
+	if(req.params.property && req.params.value)
 	{
-		params._id = req.params.p1;
-	}
-	else
-	{
-		params[req.params.p1] = req.params.p2;
+		params[req.params.property] = req.params.value;
 	}
 	db.todo.find(params, function(err, docs)
 	{

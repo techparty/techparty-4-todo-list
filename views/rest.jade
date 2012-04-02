@@ -50,11 +50,11 @@ html(lang="en")
 				|		"_id"		: "4f7358335e100d0100000001"
 				|	}...
 
-		h4 GET #{url}/todo/{user}/{_id} 
+		h4 GET #{url}/todo/id/{_id} 
 			div Example 
-				a(href='#{url}/todo/Rodrigo/4f7358335e100d0100000001') #{url}/todo/Rodrigo/4f7358335e100d0100000001
+				a(href='#{url}/todo/id/4f7358335e100d0100000001') #{url}/todo/id/4f7358335e100d0100000001
 		#description
-			| Return the ToDo with the passed <b>_id</b> as an Array with 1 Object (JSON)
+			| Return the ToDo with the passed <b>_id</b> as an Object (JSON)
 
 		h4 GET #{url}/todo/{user}/{property}/{value} 
 			div Example 
