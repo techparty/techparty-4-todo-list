@@ -5,21 +5,16 @@ var express = require('express'),
 app.use(express.bodyParser());
 app.enable("jsonp callback");
 
-app.post('/test', function(req, res)
-{
-	res.send({
-		body: req.body
-	});
-});
-
 app.get('/todo/id/:id', function(req, res)
 {
-	db.todo.findOne(req.params.id, function(err, docs)
+	var params = {
+		_id: req.params.id
+	};
+	db.todo.findOne(params, function(err, docs)
 	{
 		res.send(docs);
 	});
 });
-
 
 app.get('/todo/:user/:property?/:value?', function(req, res)
 {
