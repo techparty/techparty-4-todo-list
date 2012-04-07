@@ -1,34 +1,53 @@
-Window = (user, id, nav) ->
+Window = (id, nav) ->
 
 	# Requires
 	xhr = require "lib/xhr"
+	ui = require "ui/ui"
 	
 	# Create Window
 	self = Ti.UI.createWindow
 		backgroundColor: "#FFF"
 		title: "Tarefa"
+
+	# Edit button
+	editButton = Ti.UI.createButton
+		title: "Editar"
+	self.setRightNavButton editButton
 	
-	# User Interface
-	title = Ti.UI.createLabel
-		top: 5
-		left: 5
-		right: 5
-		height: "auto"
-		font:
-			fontWeight: "bold"
-			fontSize: 16
-	self.add title
+	# Todo
+	tableView = Ti.UI.createTableView
+		style: Ti.UI.iPhone.TableViewStyle.GROUPED
+	self.add tableView
 
 	# Request to get Todo"s list
-	xhr.request "GET", "http://techparty-todo-test.herokuapp.com/todo/#{user}/#{id}", (response) ->
-	
-		Ti.API.info "http://techparty-todo-test.herokuapp.com/todo/#{user}/#{id}"
+	updateData = ->
 
-		response = JSON.parse response
-		task = response[0]
+		xhr.request "GET", "http://techparty-todo-test.herokuapp.com/todo/id/#{id}", (response) ->
+		
+			rows = []
+			task = JSON.parse response
+			task._id = id
 
-		title.text = task.title
+			self.task = task
+
+			rows.push ui.createTableViewRowWithTitle "Task", task.title
+			rows.push ui.createTableViewRowWithTitle "Priority", task.priority
+			rows.push ui.createTableViewRowWithTitle "Status", task.status
+			rows.push ui.createTableViewRowWithTitle "Date", task.createdAt
+
+			tableView.setData rows
+
+	updateData()
 	
+	# Events
+	editButton.addEventListener "click", ->
+
+		editWindow = require "ui/EditTodo"
+		nav.open editWindow self, self.task
+
+	self.addEventListener "updated", ->
+		updateData()
+
 	return self
 
 module.exports = Window
