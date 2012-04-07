@@ -12,7 +12,14 @@ app.get('/todo/id/:id', function(req, res)
 	};
 	db.todo.findOne(params, function(err, docs)
 	{
-		res.send(docs);
+		if(docs === null)
+		{
+			res.send(204);
+		}
+		else
+		{
+			res.send(docs);
+		}
 	});
 });
 
@@ -109,5 +116,5 @@ app.get('/', function(req, res)
 
 var port = process.env.PORT || 3000;
 app.listen(port, function() {
-	console.log("Listening on " + port);
+	//console.log("Listening on " + port);
 });

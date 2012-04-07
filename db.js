@@ -1,12 +1,13 @@
-var mongoose = require('mongoose');
+var mongoose = require('mongoose'),
+	dbName = process.env.TEST ? 'todo-test' : 'todo';
 
 if(process.env.PORT)
 {
-	mongoose.connect('mongodb://todo:todo@staff.mongohq.com:10082/todo');
+	mongoose.connect('mongodb://todo:todo@staff.mongohq.com:10082/'+dbName);
 }
 else
 {
-	mongoose.connect('mongodb://localhost/todo');
+	mongoose.connect('mongodb://localhost/'+dbName);
 }
 
 var todoSchema = new mongoose.Schema({

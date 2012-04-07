@@ -19,7 +19,7 @@ exports.callback = function(cb)
 			{
 				docs.push(doc);
 				if(docs.length === 10)
-					cb(docs);
+					cb(err, docs);
 			});
 		}
 	});
