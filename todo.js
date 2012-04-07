@@ -60,7 +60,7 @@ app.put('/todo/:id', function(req, res)
 		if(count > 0)
 		{
 			res.send({
-				success	: false,
+				success	: true,
 				_id		: req.params.id,
 				payload	: req.body
 			}, 200);
