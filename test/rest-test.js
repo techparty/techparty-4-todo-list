@@ -4,7 +4,7 @@ var vows   = require('vows'),
 	assert = require('assert'),
 	tobi   = require('tobi'),
 	http   = require('http'),
-	app    = require('../todo'),
+	app    = require('../node_app/todo'),
 	client = tobi.createBrowser(3000, 'localhost');
 
 function assertStatus(code)
@@ -109,7 +109,7 @@ suite.addBatch({
 	'Run Bootstrap': {
 		topic: function()
 		{
-			require('../bootstrap').callback(this.callback);
+			require('../node_app/bootstrap').callback(this.callback);
 		},
 
 		'insert 10 docs': function(e, docs)
